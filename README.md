@@ -1,5 +1,8 @@
 # FLIX FIX
+<img src= "https://i.imgur.com/3jOQG7W.jpeg">
+
 > your fix for personal movie records.
+
 
 ## Backend API
 
