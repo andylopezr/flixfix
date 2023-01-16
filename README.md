@@ -8,11 +8,11 @@
 
 ## Requirements:
 
-* [ ] Create a registration service that receives an email and a password.
-    * [ ] Validate email is a valid email address.
-    * [ ] Validate email is not already registered in the database.
-    * [ ] Validate password contains at least 10 characters, one lowercase letter, one uppercase letter and one of the following characters: !, @, #, ? or ].
-    * [ ] If any of the above is not valid, send back a meaningful response.
+* [X] Create a registration service that receives an email and a password.
+    * [X] Validate email is a valid email address.
+    * [X] Validate email is not already registered in the database.
+    * [X] Validate password contains at least 10 characters, one lowercase letter, one uppercase letter and one of the following characters: !, @, #, ? or ].
+    * [X] If any of the above is not valid, send back a meaningful response.
 
 
 * [ ] Allow login into the server with an email and a password.
