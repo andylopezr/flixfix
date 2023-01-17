@@ -13,20 +13,19 @@ class CustomUserManager(BaseUserManager):
         Create and save a User with the given email and password.
         """
 
-        email_pattern = r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+\
-                            (\.[A-Z|a-z]{2,})+'
-        password_pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#?\]]).{10,}$'
+        e = r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'
+        p = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#?\]]).{10,}$'
 
         if not email:
             raise ValueError(_('Enter email'))
 
-        if not re.fullmatch(email_pattern, email):
+        if not re.fullmatch(e, email):
             raise ValueError(_('Invalid email'))
 
         if not password:
             raise ValueError(_('Enter password'))
 
-        if not re.fullmatch(password_pattern, password):
+        if not re.fullmatch(p, password):
             raise ValueError(_('Password does not comply with requirements'))
 
         email = self.normalize_email(email)
