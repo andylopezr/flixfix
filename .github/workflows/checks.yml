@@ -16,6 +16,7 @@ jobs:
 
       - name: Test
         run: python manage.py test
+
+      - run: cd flixapp/
       - name: Lint
-        run: cd flixapp/
         run: flake8
