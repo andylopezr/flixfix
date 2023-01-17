@@ -5,10 +5,12 @@ from ninja.security import HttpBearer
 from pydantic import SecretStr
 from django.contrib.auth.hashers import check_password
 from user.models import User
+from movies.models import Movie
 from datetime import timedelta, datetime
 from jwt import encode, PyJWTError, decode
 from django.shortcuts import get_object_or_404
 from django.conf import settings
+from ninja.pagination import paginate
 
 
 class TokenPayload(Schema):
@@ -42,6 +44,7 @@ api = NinjaAPI(
     version="0.1.0",
 )
 
+# Django Ninja schemas ------------------------------------------------------
 
 class UserSchema(Schema):
     email: str
@@ -52,6 +55,15 @@ class LoginSchema(Schema):
     email: str
     password: SecretStr
 
+
+class MovieSchema(Schema):
+    title: str
+    score: float
+    description: str
+    review: str
+
+
+# Django Ninja AccessToken --------------------------------------------------
 
 class AccessToken:
     @staticmethod
@@ -102,7 +114,10 @@ def create_user_api(request, payload: UserSchema):
         payload.email,
         payload.password,
     )
-    return {"id": user.id}
+    return {
+        "id": user.id,
+        "email": user.email,
+        }
 
 
 # Login
@@ -117,6 +132,19 @@ def user_login(request, payload: LoginSchema):
 
     if check_password(payload.password.get_secret_value(), user.password):
         return AccessToken.create(user)
+
+@api.post('/movie')
+def create_movie(request, payload: MovieSchema):
+    """Add a new movie"""
+    movie_form = {
+        'user': request.auth,
+        'title': payload.title,
+        'score': payload.score,
+        'description': payload.description,
+        'review': payload.review,
+    }
+    movie = Movie.objects.create(**payload.dict())
+    return {"title": movie.title}
 
 # Django routes ------------------------------------------------------------
 
