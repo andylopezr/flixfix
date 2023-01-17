@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 import re
 
+
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifier
@@ -12,8 +13,9 @@ class CustomUserManager(BaseUserManager):
         Create and save a User with the given email and password.
         """
 
-        email_pattern = '([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+'
-        password_pattern = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#?\]]).{10,}$'
+        email_pattern = r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+\
+                            (\.[A-Z|a-z]{2,})+'
+        password_pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[!@#?\]]).{10,}$'
 
         if not email:
             raise ValueError(_('Enter email'))
