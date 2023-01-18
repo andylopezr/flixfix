@@ -22,6 +22,7 @@ class Movie(models.Model):
     score = models.DecimalField(max_digits=2, decimal_places=1)
     description = models.TextField(blank=True)
     review = models.TextField(blank=True)
+    is_private = models.BooleanField(default=True)
     # poster = models.ImageField(null=True, upload_to=poster_file_path)
 
     def __str__(self):

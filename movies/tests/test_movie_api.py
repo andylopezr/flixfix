@@ -15,9 +15,11 @@ from movie.serializers import MovieSerializer
 MOVIES_URL = "http://127.0.0.1:8000/api/movie"
 # TODO: check user creation url and response once it is live in AWS
 
+
 def create_user(email='user@example.com', password='Testpassword!'):
     """Create and return a new user."""
     return get_user_model().objects.create_user(email, password)
+
 
 def create_movie(user, **params):
     """Create and return a sample movie."""
@@ -51,7 +53,7 @@ class PrivateMovieApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(email='user@example.com', password='Testpassword!')
+        self.user = create_user(email='t@e.com', password='Testpassword!')
         self.client.force_authenticate(self.user)
 
     def test_retrieve_movies(self):
@@ -68,7 +70,7 @@ class PrivateMovieApiTests(TestCase):
 
     def test_movie_list_limited_to_user(self):
         """Test list of movies is limited to authenticated user."""
-        other_user = create_user(email='other@example.com', password='Testpassword!')
+        other_user = create_user(email='t@e.com', password='Testpassword!')
         create_movie(user=other_user)
         create_movie(user=self.user)
 
