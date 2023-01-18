@@ -12,6 +12,8 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings
 from ninja.pagination import paginate
 from typing import List
+import requests
+
 
 
 class TokenPayload(Schema):
@@ -52,10 +54,11 @@ class UserSchema(Schema):
     email: str
     password: str
 
+
 class getUserSchema(Schema):
-    id:int
-    email:str
-    password: str
+    id: int
+    email: str
+
 
 class LoginSchema(Schema):
     email: str
@@ -67,6 +70,24 @@ class MovieSchema(Schema):
     score: float
     description: str
     review: str
+    is_private: bool
+
+
+class getMovieSchema(Schema):
+    id: int
+    title: str
+    score: float
+    description: str
+    review: str
+    is_private: bool
+
+
+class editMovieSchema(Schema):
+    title: str
+    score: float
+    description: str
+    review: str
+    is_private: bool
 
 
 # Django Ninja AccessToken --------------------------------------------------
@@ -142,6 +163,7 @@ def user_login(request, payload: LoginSchema):
 
 # List all users
 @api.get('/users', response=List[getUserSchema], auth=None)
+@paginate
 def get_users(request):
     """Lists all users"""
     all_users = User.objects.all()
@@ -156,8 +178,30 @@ def get_user(request, user_id: int):
     return user
 
 
+# TODO: Fix bug where update does not meet the user creation requirements
+# Update User
+@api.put('/users/{user_id}', auth=None)
+def update_user(request, user_id: int, payload: UserSchema):
+    """Update user attributes"""
+    user = get_object_or_404(User, id=user_id)
+    for attr, value in payload.dict().items():
+        setattr(user, attr, value)
+    user.save()
+    return {"success": True}
+
+
+# Delete user
+@api.delete('/users/{user_id}', auth=None)
+def delete_user(request, user_id: int):
+    """Delete a user by id"""
+    user = get_object_or_404(User, id=user_id)
+    user.delete()
+    return {'success': True}
+
+
 # Movie routes --------------------------------------------------------------
 
+# Creates a Movie post
 @api.post('/movie')
 def create_movie(request, payload: MovieSchema):
     """Add a new movie"""
@@ -167,12 +211,69 @@ def create_movie(request, payload: MovieSchema):
         'score': payload.score,
         'description': payload.description,
         'review': payload.review,
+        'is_private': payload.is_private,
     }
     movie = Movie.objects.create(**movie_form)
     return {"title": movie.title}
 
-# Django routes ------------------------------------------------------------
 
+# List public Movie posts
+@api.get('/list_all_movies', response=List[getMovieSchema], auth=None)
+@paginate
+def get_public_movies(request):
+    """List all public movie posts"""
+    public_movies = Movie.objects.filter(is_private=False)
+    return public_movies
+
+
+# List private Movie posts
+@api.get('/list_user_movies', response=List[getMovieSchema])
+@paginate
+def get_user_movies(request, is_private: bool):
+    """List all private or public movies created by user"""
+    private_movies = Movie.objects.filter(user=request.auth)
+    return private_movies
+
+
+# Update a Movie
+@api.put('/movie/{movie_id}')
+def update_movie(request, movie_id: int, payload: editMovieSchema):
+    """Update a movie using id"""
+    try:
+        movie = Movie.objects.get(id=movie_id, user=request.auth)
+        for attr, value in payload.dict().items():
+            setattr(movie, attr, value)
+        movie.save()
+        return {"success": True}
+
+    except Movie.DoesNotExist:
+        raise Exception("Unauthorized")
+
+
+# Delete a Movie
+@api.delete('/movie/{movie_id}')
+def delete_movie(request, movie_id: int):
+    """Delete a movie using id"""
+    try:
+        movie = Movie.objects.get(id=movie_id, user=request.auth)
+        movie.delete()
+        return {'success': True}
+
+    except Movie.DoesNotExist:
+        raise Exception("Unauthorized")
+
+
+# Random number ------------------------------------------------------------
+
+@api.get('/number/', auth=None)
+def random_number(request):
+    """Gets random number from public API"""
+    url = 'http://www.randomnumberapi.com/api/v1.0/randomnumber'
+    r = requests.get(url)
+    return {'number': r.text}
+
+
+# Django routes ------------------------------------------------------------
 
 urlpatterns = [
     path('admin/', admin.site.urls),
