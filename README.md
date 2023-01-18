@@ -23,9 +23,9 @@
     * [X] If all of the above are valid send back a payload including some way for users to identify themselves for subsequent requests. That way to identify users should be invalid after 20 minutes and the user must login again to continue communication with the server.
 
 
-* [ ] Allow logged in users to do CRUD operations into a table/collection of the topic you picked above.
-    * [ ] Users should be able to create a new element that can only be retrieved by themselves (Private item), or that can be retrieved by others (Public item).
-    * [ ] Users should be able to read all public elements in the table/collection.
-    * [ ] Users should be able to read all elements created by themselves.
-    * [ ] Users should be able to edit at least one field in one of their private items.
-    * [ ] Validate that users are trying to read or update their own private elements, otherwise send a meaningful response.
+* [X] Allow logged in users to do CRUD operations into a table/collection of the topic you picked above.
+    * [X] Users should be able to create a new element that can only be retrieved by themselves (Private item), or that can be retrieved by others (Public item).
+    * [X] Users should be able to read all public elements in the table/collection.
+    * [X] Users should be able to read all elements created by themselves.
+    * [X] Users should be able to edit at least one field in one of their private items.
+    * [X] Validate that users are trying to read or update their own private elements, otherwise send a meaningful response.
