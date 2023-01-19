@@ -4,9 +4,9 @@
   <br>
 </h1>
 <h4 align="center">Your fix for personal movie records.</h4>
-
-![screenshot](https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif)
-
+<p align="center">
+    ![screenshot](https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif)
+</p>
 
 ### Backend API
 
