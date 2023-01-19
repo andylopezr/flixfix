@@ -82,14 +82,6 @@ class getMovieSchema(Schema):
     is_private: bool
 
 
-class editMovieSchema(Schema):
-    title: str
-    score: float
-    description: str
-    review: str
-    is_private: bool
-
-
 # Django Ninja AccessToken --------------------------------------------------
 
 class AccessToken:
@@ -262,7 +254,7 @@ def get_user_movies(request, is_private: bool):
 
 # Update a Movie
 @api.put('/movie/{movie_id}')
-def update_movie(request, movie_id: int, payload: editMovieSchema):
+def update_movie(request, movie_id: int, payload: MovieSchema):
     """Update a movie using id"""
     try:
         movie = Movie.objects.get(id=movie_id, user=request.auth)
