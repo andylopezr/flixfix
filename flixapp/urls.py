@@ -247,12 +247,12 @@ def get_public_movies(request):
     return public_movies
 
 
-# List private Movie posts
+# List User Movie posts
 @api.get('/list_user_movies', response=List[getMovieSchema])
 @paginate
 def get_user_movies(request, is_private: bool):
     """List all private or public movies created by user"""
-    if is_private == True:
+    if is_private is True:
         movies = Movie.objects.filter(user=request.auth, is_private=True)
     else:
         movies = Movie.objects.filter(user=request.auth, is_private=False)
