@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings
 from ninja.pagination import paginate
 from typing import List
+from django.db.utils import IntegrityError
 import requests
 
 
@@ -136,10 +137,19 @@ def create_user_api(request, payload: UserSchema):
             - Should include one of these special characters: ! @ # ? ]
 
     """
-    user = User.objects.create_user(
-        payload.email,
-        payload.password,
-    )
+    try:
+        user = User.objects.create_user(
+            payload.email,
+            payload.password,
+        )
+
+    except IntegrityError:
+        return api.create_response(
+            request,
+            {"error": "Email already exists"},
+            status=409,
+        )
+
     return {
         "id": user.id,
         "email": user.email,
@@ -154,7 +164,10 @@ def user_login(request, payload: LoginSchema):
         user = User.objects.get(email=payload.email)
 
     except Exception:
-        return "User not found!"
+        return api.create_response(
+            request,
+            {"error": "User not found"},
+            status=404)
 
     if check_password(payload.password.get_secret_value(), user.password):
         return AccessToken.create(user)
@@ -186,7 +199,10 @@ def update_user(request, user_id: int, payload: UserSchema):
     for attr, value in payload.dict().items():
         setattr(user, attr, value)
     user.save()
-    return {"success": True}
+    return api.create_response(
+            request,
+            {"message": "Updated successfully"},
+            status=204)
 
 
 # Delete user
@@ -195,7 +211,10 @@ def delete_user(request, user_id: int):
     """Delete a user by id"""
     user = get_object_or_404(User, id=user_id)
     user.delete()
-    return {'success': True}
+    return api.create_response(
+            request,
+            {"message": "Deleted successfully"},
+            status=204)
 
 
 # Movie routes --------------------------------------------------------------
@@ -213,7 +232,10 @@ def create_movie(request, payload: MovieSchema):
         'is_private': payload.is_private,
     }
     movie = Movie.objects.create(**movie_form)
-    return {"title": movie.title}
+    return api.create_response(
+            request,
+            {"title": movie.title},
+            status=201)
 
 
 # List public Movie posts
@@ -230,8 +252,12 @@ def get_public_movies(request):
 @paginate
 def get_user_movies(request, is_private: bool):
     """List all private or public movies created by user"""
-    private_movies = Movie.objects.filter(user=request.auth)
-    return private_movies
+    if is_private == True:
+        movies = Movie.objects.filter(user=request.auth, is_private=True)
+    else:
+        movies = Movie.objects.filter(user=request.auth, is_private=False)
+
+    return movies
 
 
 # Update a Movie
@@ -243,10 +269,16 @@ def update_movie(request, movie_id: int, payload: editMovieSchema):
         for attr, value in payload.dict().items():
             setattr(movie, attr, value)
         movie.save()
-        return {"success": True}
+        return api.create_response(
+            request,
+            {"message": "Updated successfully"},
+            status=204)
 
-    except Movie.DoesNotExist:
-        raise Exception("Unauthorized")
+    except Exception:
+        return api.create_response(
+            request,
+            {"error": "Unauthorized"},
+            status=401)
 
 
 # Delete a Movie
@@ -256,10 +288,16 @@ def delete_movie(request, movie_id: int):
     try:
         movie = Movie.objects.get(id=movie_id, user=request.auth)
         movie.delete()
-        return {'success': True}
+        return api.create_response(
+            request,
+            {"message": "Deleted successfully"},
+            status=204)
 
-    except Movie.DoesNotExist:
-        raise Exception("Unauthorized")
+    except Exception:
+        return api.create_response(
+            request,
+            {"error": "Unauthorized"},
+            status=401,)
 
 
 # Random number ------------------------------------------------------------
