@@ -4,11 +4,29 @@
   <br>
 </h1>
 <h4 align="center">Your fix for personal movie records.</h4>
-<p align="center">
-    ![screenshot](https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif)
-</p>
 
-### Backend API
+![screenshot](https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif)
+
+## Key Features
+
+* Registration - with email and password
+    - Validate if email is valid
+    - Validate if email is registered
+    - Complete password validation
+
+* Login features
+    - Validate email and passwor matches
+
+* Add your favorite movies
+    - Make them public or private
+
+* Secure Authentication features
+
+* JSON requests and responses
+
+## How to use
+
+The project is deployed on [AWS](http://ec2-54-91-233-8.compute-1.amazonaws.com/api/docs) you'll find all the endpoints that are available with documentation, please try them on!
 
 ### Requirements:
 
