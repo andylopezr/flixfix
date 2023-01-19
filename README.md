@@ -1,12 +1,16 @@
-# FLIX FIX
-<img src= "https://i.imgur.com/3jOQG7W.jpeg">
+<h1 align="center">
+  <br>
+  <img src="https://i.imgur.com/3jOQG7W.jpeg" alt="flixfix" width="200">
+  <br>
+</h1>
+<h4 align="center">Your fix for personal movie records.</h4>
 
-> your fix for personal movie records.
+![screenshot](https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif)
 
 
-## Backend API
+### Backend API
 
-## Requirements:
+### Requirements:
 
 * [X] Create a registration service that receives an email and a password.
     * [X] Validate email is a valid email address.
