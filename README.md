@@ -30,6 +30,25 @@
 
 The project is deployed on [AWS](http://ec2-54-91-233-8.compute-1.amazonaws.com/api/docs) you'll find all the endpoints that are available with documentation, please try them on!
 
+> Movie creation example:
+
+```bash
+POST
+{
+  "title": "Pirates of the Caribbean",
+  "score": 8.8,
+  "description": "A movie about pirates",
+  "review": "amazing",
+  "is_private": true
+}
+
+RESPONSE
+201
+{
+  "title": "Pirates of the Caribbean"
+}
+```
+
 ### Requirements:
 
 * [X] Create a registration service that receives an email and a password.
