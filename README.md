@@ -28,7 +28,9 @@
 
 ## How to use
 
-The project is deployed on [AWS](http://ec2-54-91-233-8.compute-1.amazonaws.com/api/docs) you'll find all the endpoints that are available with documentation, please try them on!
+> The project is deployed on [AWS](http://ec2-54-91-233-8.compute-1.amazonaws.com/api/docs) you'll find all the endpoints that are available with documentation, please try them on!
+
+* <a href="http://ec2-54-91-233-8.compute-1.amazonaws.com/api/docs">Click here to access the API endpoints</a>
 
 > Movie creation example:
 
