@@ -6,7 +6,7 @@
 <h4 align="center">Your fix for personal movie records.</h4>
 
 <p align="center">
-  <img src="https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif" width="800" />
+  <img src="https://i.imgur.com/XLdzAme.gif" width="800" />
 </p>
 
 ## Key Features
@@ -49,7 +49,16 @@ RESPONSE
 }
 ```
 
-### Requirements:
+## Built with
+
+* Python 3.10.6
+* Django 4.1.5
+* Django Ninja 0.20.0
+* gunicorn 20.1.0
+* nginx 1.18.0
+* sqlite3
+
+## Requirements
 
 * [X] Create a registration service that receives an email and a password.
     * [X] Validate email is a valid email address.
