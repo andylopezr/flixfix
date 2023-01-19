@@ -15,7 +15,6 @@ from typing import List
 import requests
 
 
-
 class TokenPayload(Schema):
     user_id: int = None
 
