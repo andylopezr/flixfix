@@ -6,7 +6,7 @@
 <h4 align="center">Your fix for personal movie records.</h4>
 
 <p align="center">
-  <img src="https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif" />
+  <img src="https://im5.ezgif.com/tmp/ezgif-5-28c9a625a9.gif" width="800" />
 </p>
 
 ## Key Features
