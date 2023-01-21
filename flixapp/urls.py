@@ -182,20 +182,28 @@ def get_user(request, user_id: int):
     return user
 
 
-# TODO: Fix bug where update does not meet the user creation requirements
 # Update User
-@api.put('/users/{user_id}', auth=None)
+@api.put('/users/{user_id}')
 def update_user(request, user_id: int, payload: UserSchema):
     """Update user attributes"""
     user = get_object_or_404(User, id=user_id)
-    for attr, value in payload.dict().items():
-        setattr(user, attr, value)
-    user.save()
-    return api.create_response(
-            request,
-            {"message": "Updated successfully"},
-            status=204)
 
+    if (request.auth.id == user_id):
+        for attr, value in payload.dict().items():
+            setattr(user, attr, value)
+            if payload.password:
+                user.set_password(payload.password)
+        user.save()
+        return api.create_response(
+                request,
+                {"message": "Updated successfully"},
+                status=204)
+
+    else:
+        return api.create_response(
+            request,
+            {"error": "Unauthorized"},
+            status=401)
 
 # Delete user
 @api.delete('/users/{user_id}', auth=None)
